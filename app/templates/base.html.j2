@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% if title %}
+        <title>{{ title }} - Cheap Logistics Mesh</title>
+        {% else %}
+        <title>Welcome to Cheap Logistics Mesh</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            Cheap Logistics Mesh:
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('upload_map') }}">Upload Map</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

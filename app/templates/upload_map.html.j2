@@ -1,0 +1,23 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+    <h1>Upload Logistic Mesh Map</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.mapname.label }}<br>
+            {{ form.mapname(size=32) }}<br>
+            {% for error in form.mapname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.routes.label }}<br>
+            {{ form.routes(rows=7, cols=7) }}<br>
+            {% for error in form.routes.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
