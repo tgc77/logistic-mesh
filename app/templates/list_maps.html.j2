@@ -1,0 +1,12 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+    {% if logistic_maps %}
+    <h1>Logistic Mesh Maps:</h1>
+    {% for lm_map in logistic_maps %}
+        <strong>Map name: {{ lm_map.mapname }}</strong>
+        <div>Map routes: {{ lm_map.routes.join('\n') }}</div>
+        <hr />
+    {% endfor %}
+    {% endif %}
+{% endblock %}
