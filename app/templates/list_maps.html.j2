@@ -5,7 +5,7 @@
     <h1>Logistic Mesh Maps:</h1>
     {% for lm_map in logistic_maps %}
         <strong>Map name: {{ lm_map.mapname }}</strong>
-        <div>Map routes: {{ lm_map.routes.join('\n') }}</div>
+        <div><strong>Map routes:</strong> {{ lm_map.routes }}</div>
         <hr />
     {% endfor %}
     {% endif %}

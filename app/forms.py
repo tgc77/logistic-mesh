@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
+from wtforms import StringField, TextAreaField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 
 
@@ -10,10 +10,10 @@ class UploadMapForm(FlaskForm):
 
 
 class FindBestRouteForm(FlaskForm):
-    mapname = StringField('Mapname', validators=[DataRequired()])
+    mapname = SelectField('Mapname', validators=[DataRequired()], coerce=str)
     origin = StringField('Origin', validators=[DataRequired()])
     destiny = StringField('Destiny', validators=[DataRequired()])
-    truck_autonomy = StringField('TruckAutonomy', validators=[DataRequired()])
+    truck_autonomy = StringField('Truck Autonomy', validators=[DataRequired()])
     liter_fuel_value = StringField(
-        'LiterFuelValue', validators=[DataRequired()])
+        'Liter Fuel Value', validators=[DataRequired()])
     submit = SubmitField('Find')

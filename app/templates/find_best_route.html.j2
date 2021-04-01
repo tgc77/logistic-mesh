@@ -1,0 +1,44 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+    <h1>Find the best route from given logistic mesh map:</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.mapname.label }}<br>
+            {{ form.mapname() }}<br>
+            {% for error in form.mapname.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.origin.label }}<br>
+            {{ form.origin(size=10) }}<br>
+            {% for error in form.origin.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.destiny.label }}<br>
+            {{ form.destiny(size=10) }}<br>
+            {% for error in form.destiny.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.truck_autonomy.label }}<br>
+            {{ form.truck_autonomy(size=10) }} (km/l)<br>
+            {% for error in form.truck_autonomy.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.liter_fuel_value.label }}<br>
+            {{ form.liter_fuel_value(size=10) }}<br>
+            {% for error in form.liter_fuel_value.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

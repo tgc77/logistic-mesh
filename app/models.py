@@ -7,4 +7,4 @@ class LogisticMeshMap(db.Model):
     routes = db.Column(db.JSON, nullable=True)
 
     def __repr__(self):
-        return 'f<LogisticMeshMap {self.mapname}>'
+        return '<LogisticMeshMap {}>'.format(self.mapname)
