@@ -14,10 +14,12 @@ class Graph:
             self._adjacents[routes[0]].update({routes[1]: routes[2]})
             self._vertices.add(routes[0])
             self._vertices.add(routes[1])
+        self._vertices = list(self.vertices)
+        self._vertices.sort()
 
     @property
     def adjacents(self):
-        return self._adjacents.items()
+        return self._adjacents
 
     @property
     def vertices(self):
