@@ -1,0 +1,6 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+    <h1>{{ error }}</h1>
+    <p><a href="{{ url_for('app.index') }}">Back</a></p>
+{% endblock %}
