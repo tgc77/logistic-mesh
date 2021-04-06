@@ -151,5 +151,5 @@ class TestAppCase(BaseTestCase):
         parser = MyHTMLParser()
         parser.lookup_tag('h1')
         lookup_data = parser.read(html_data)
-        expected = "400 Bad Request: Field 'origin' must be a letter in the range: [A, B, C, D, E]"
-        self.assertEqual(lookup_data[0], expected)
+        expected = "400 Bad Request: Field 'origin' must be a letter in the range:"
+        self.assertTrue(expected in lookup_data[0])
