@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn koper_test:app
+web: flask db upgrade; gunicorn logistic_mesh:app

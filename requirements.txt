@@ -19,3 +19,5 @@ SQLAlchemy==1.4.3
 toml==0.10.2
 Werkzeug==1.0.1
 WTForms==2.3.3
+gunicorn
+psycopg2

@@ -1,3 +1,3 @@
-FLASK_APP=koper_test.py
+FLASK_APP=logistic_mesh.py
 FLASK_ENV=production
 FLASK_DEBUG=0
