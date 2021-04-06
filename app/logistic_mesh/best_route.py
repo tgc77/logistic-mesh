@@ -1,5 +1,7 @@
 import heapq
 from typing import Dict, Tuple
+
+from wtforms.validators import ValidationError
 from .graph import Graph
 
 
@@ -16,6 +18,15 @@ def get_best_route(routes: list, origin: str, target: str) -> tuple:
     """
     graph = Graph()
     graph.load_from_json(routes)
+
+    str_list = ", ".join(graph.vertices)
+    if origin not in graph.vertices:
+        raise ValidationError(
+            f"Field 'origin' must be a letter in the range: [{str_list}]")
+
+    if target not in graph.vertices:
+        raise ValidationError(
+            f"Field 'destiny' must be a letter in the range: [{str_list}]")
 
     paths, distances = dijkstra(graph.adjacents, origin, target)
 
@@ -34,18 +45,18 @@ def find_best_path(target: str, paths: dict) -> list:
     Returns:
         list: Shortest path according given input parameters.
     """
-    p = target
-    path = [p]
-    while p:
-        if not paths.get(p):
-            path = []
-            break
-        el = paths[p]
+    dest = target
+    path = []
+    while dest:
+        el = paths.get(dest)
         if el is None:
             break
         path.append(el)
-        p = el
-    path.sort()
+        dest = el
+
+    if len(path) > 0:
+        path.append(target)
+        path.sort()
     return path
 
 

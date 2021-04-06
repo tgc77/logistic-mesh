@@ -1,20 +1,22 @@
 from flask import render_template, flash, redirect, url_for, abort
 import json
 
-from app import app, db
+from wtforms.validators import ValidationError
+
+from app import bp, db
 from app.forms import UploadMapForm, FindBestRouteForm
 from app.models import LogisticMeshMap
 from app.logistic_mesh.best_route import get_best_route
 from app.utils import validate_map_inputs
 
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 def index():
-    return redirect(url_for('list_maps'))
+    return redirect(url_for('app.list_maps'))
 
 
-@app.route('/upload_map', methods=['GET', 'POST'])
+@bp.route('/upload_map', methods=['GET', 'POST'])
 def upload_map():
     form = UploadMapForm()
     if form.validate_on_submit():
@@ -29,11 +31,11 @@ def upload_map():
         db.session.add(logistic_map)
         db.session.commit()
         flash('Map uploaded successfully!', 'info')
-        return redirect(url_for('index'))
+        return redirect(url_for('app.list_maps'))
     return render_template('upload_map.html.j2', title='Upload Map', form=form)
 
 
-@app.route('/list_maps')
+@bp.route('/list_maps')
 def list_maps():
     logistic_maps = LogisticMeshMap.query.all()
 
@@ -43,7 +45,7 @@ def list_maps():
         return render_template('index.html.j2', title='Home App')
 
 
-@app.route('/find_best_route', methods=['GET', 'POST'])
+@bp.route('/find_best_route', methods=['GET', 'POST'])
 def find_best_route():
     form = FindBestRouteForm()
 
@@ -54,10 +56,14 @@ def find_best_route():
         lm_map = LogisticMeshMap.query.filter_by(
             mapname=form.mapname.data).first_or_404()
 
-        origin = form.origin.data
-        target = form.destiny.data
-        best_path, distance = get_best_route(json.loads(lm_map.routes),
-                                             origin=origin, target=target)
+        origin = form.origin.data.upper()
+        target = form.destiny.data.upper()
+        best_path, distance = ([], 0.0)
+        try:
+            best_path, distance = get_best_route(json.loads(lm_map.routes),
+                                                 origin=origin, target=target)
+        except ValidationError as err:
+            abort(400, err)
 
         result = dict()
         result['mapname'] = lm_map.mapname
@@ -65,6 +71,7 @@ def find_best_route():
         result['cost'] = 0.0
         autonomy = float(form.truck_autonomy.data)
         liter_value = float(form.liter_fuel_value.data)
+
         if distance:
             result['cost'] = (distance / autonomy) * liter_value
             flash('Best route found successfully!', 'info')

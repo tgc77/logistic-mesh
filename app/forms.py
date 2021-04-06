@@ -6,7 +6,7 @@ from wtforms import (
     SelectField,
     FloatField
 )
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Regexp
 
 
 class UploadMapForm(FlaskForm):
@@ -30,7 +30,7 @@ class FindBestRouteForm(FlaskForm):
     origin = StringField('Origin', validators=[DataRequired()])
     destiny = StringField('Destiny', validators=[DataRequired()])
     truck_autonomy = MyFloatField(
-        'Truck Autonomy', validators=[DataRequired()])
+        'Truck Autonomy', validators=[DataRequired(message="This field must be a number.")])
     liter_fuel_value = MyFloatField(
-        'Liter Fuel Value', validators=[DataRequired()])
+        'Liter Fuel Value', validators=[DataRequired(message="This field must be a number.")])
     submit = SubmitField('Find')

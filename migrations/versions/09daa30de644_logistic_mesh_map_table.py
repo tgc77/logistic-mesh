@@ -1,8 +1,8 @@
-"""logisticMeshMap table
+"""logistic_mesh_map table
 
-Revision ID: 8e194efc695b
+Revision ID: 09daa30de644
 Revises: 
-Create Date: 2021-03-30 15:13:43.930733
+Create Date: 2021-04-06 00:05:52.531207
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8e194efc695b'
+revision = '09daa30de644'
 down_revision = None
 branch_labels = None
 depends_on = None

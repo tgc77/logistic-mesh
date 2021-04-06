@@ -11,6 +11,8 @@ class Graph:
 
     def load_from_json(self, json):
         for routes in json:
+            if len(routes) == 0:
+                continue
             self._adjacents[routes[0]].update({routes[1]: routes[2]})
             self._vertices.add(routes[0])
             self._vertices.add(routes[1])
