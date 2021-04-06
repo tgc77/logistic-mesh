@@ -15,13 +15,16 @@ def input_is_string(input):
 
 
 def validate_map_inputs(log_map):
-    for data in log_map:
-        tmp = tuple(data)
-        p1, p2, dist = tmp
-        if not input_is_string(p1):
-            return False
-        if not input_is_string(p2):
-            return False
-        if not dist.isnumeric():
-            return False
+    try:
+        for data in log_map:
+            tmp = tuple(data)
+            p1, p2, dist = tmp
+            if not input_is_string(p1):
+                return False
+            if not input_is_string(p2):
+                return False
+            if not dist.isnumeric():
+                return False
+    except (ValueError, Exception):
+        return False
     return True

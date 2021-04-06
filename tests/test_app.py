@@ -56,7 +56,7 @@ class TestAppCase(BaseTestCase):
                                headers={"Content-Type": "application/x-www-form-urlencoded"})
         self.assertEqual(res.status_code, 200)
 
-    def test_upload_map_should_abort_with_400_status_code(self):
+    def test_upload_map_should_abort_with_400_status(self):
         data = dict(
             mapname='mapa sp',
             routes="4 B 10\nB C 20\nC D 15"
@@ -64,6 +64,24 @@ class TestAppCase(BaseTestCase):
         res = self.client.post('/upload_map', data=data, follow_redirects=True,
                                headers={"Content-Type": "application/x-www-form-urlencoded"})
         self.assertEqual(res.status_code, 400)
+
+    def test_upload_map_with_mapname_already_exists_should_abort_with_409_status(self):
+        self._create_map_sp()
+        data = dict(
+            mapname='mapa sp',
+            routes="A B 10\nB C 20\nC D 15"
+        )
+        res = self.client.post('/upload_map', data=data, follow_redirects=True,
+                               headers={"Content-Type": "application/x-www-form-urlencoded"})
+        self.assertEqual(res.status_code, 409)
+
+        """Get response data from error into template html"""
+        html_data = res.get_data(True)
+        parser = MyHTMLParser()
+        parser.lookup_tag('h1')
+        lookup_data = parser.read(html_data)
+        expected = "409 Conflict: Oops! This mapname already exists in the database! Choose another one!"
+        self.assertEqual(lookup_data[0], expected)
 
     def test_list_maps(self):
         """Testing with any map saved into database"""
@@ -76,7 +94,7 @@ class TestAppCase(BaseTestCase):
         res = self.client.get('/list_maps', follow_redirects=True)
         self.assertEqual(res.status_code, 200)
 
-    def test_find_best_route(self):
+    def test_find_best_route_successfully(self):
         res = self.client.get('/find_best_route', follow_redirects=True)
         self.assertEqual(res.status_code, 200)
 

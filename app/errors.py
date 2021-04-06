@@ -3,13 +3,18 @@ from app import bp, db
 
 
 @bp.errorhandler(400)
-def not_found_error(error):
+def abort_error(error):
     return render_template('400.html.j2', error=error), 400
 
 
 @bp.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html.j2'), 404
+
+
+@bp.errorhandler(409)
+def conflict_error(error):
+    return render_template('409.html.j2', error=error), 409
 
 
 @bp.errorhandler(500)

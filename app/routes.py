@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for, abort
 import json
-
+from sqlalchemy import exc
+from sqlite3 import IntegrityError as sqlite3IntegrityError
 from wtforms.validators import ValidationError
 
 from app import bp, db
@@ -25,11 +26,27 @@ def upload_map():
         log_map = [s.rstrip().split() for s in form.routes.data.split('\n')]
 
         if not validate_map_inputs(log_map):
-            abort(400, "Invalid Map! Values must be in the format: A B 123")
+            abort(400, "Invalid Map! Values must be in the format:"
+                  "<br />A B 12<br />C D 20<br />B D 10")
 
         logistic_map.routes = json.dumps(log_map)
         db.session.add(logistic_map)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except AssertionError:
+            db.session.rollback()
+            abort(409, "Oops! AssertionError, you may have input with invalid values!")
+        except (exc.IntegrityError, sqlite3IntegrityError):
+            db.session.rollback()
+            abort(409, "Oops! This mapname already exists in the database! "
+                  "Choose another one!")
+        except Exception:
+            db.session.rollback()
+            abort(500)
+        finally:
+            db.session.close()
+
         flash('Map uploaded successfully!', 'info')
         return redirect(url_for('app.list_maps'))
     return render_template('upload_map.html.j2', title='Upload Map', form=form)
